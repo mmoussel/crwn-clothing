@@ -9,6 +9,7 @@ const Header = ({ currentUser }) => (
       <Logo className="logo" />
     </Link>
     <div className="options">
+      <span className="name">{currentUser?.displayName}</span>
       <Link className="option" to="/shop">
         Shop
       </Link>
