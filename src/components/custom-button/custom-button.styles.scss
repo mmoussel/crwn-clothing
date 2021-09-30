@@ -19,12 +19,23 @@
     color: black;
     border: 1px solid black;
   }
+
   &.google-sign-in {
     background-color: #4285f4;
     color: #fff;
     &:hover {
       background-color: #3571e8;
       border: none;
+    }
+  }
+
+  &.inverted {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    &:hover {
+      background-color: black;
+      color: white;
     }
   }
 }
