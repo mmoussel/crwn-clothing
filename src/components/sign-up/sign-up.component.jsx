@@ -1,12 +1,13 @@
 import React from "react";
 
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
 import { createUserProfileDocument, auth } from "../../firebase/firebase.utils";
 
-import "./sign-up.styles.scss";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { SignUpContainer, SignUpTitle } from "./sign-up.styles";
 
 class SignUp extends React.Component {
   constructor() {
@@ -53,45 +54,45 @@ class SignUp extends React.Component {
   render() {
     const { displayName, email, password, confirmPassword } = this.state;
     return (
-      <div className="sign-up">
-        <h2 className="title">i do not have an account</h2>
-        <span>Sign up whith e-mail and password</span>
+      <SignUpContainer>
+        <SignUpTitle>I do not have a account</SignUpTitle>
+        <span>Sign up with your email and password</span>
         <form className="sign-up-form" onSubmit={this.handleSubmit}>
           <FormInput
             type="text"
             name="displayName"
-            handleChange={this.handleChange}
             value={displayName}
-            label="name"
+            onChange={this.handleChange}
+            label="Display Name"
             required
           />
           <FormInput
             type="email"
             name="email"
-            handleChange={this.handleChange}
             value={email}
-            label="email"
+            onChange={this.handleChange}
+            label="Email"
             required
           />
           <FormInput
+            type="password"
             name="password"
-            type="password"
             value={password}
-            handleChange={this.handleChange}
-            label="password"
+            onChange={this.handleChange}
+            label="Password"
             required
           />
           <FormInput
-            name="confirmPassword"
             type="password"
+            name="confirmPassword"
             value={confirmPassword}
-            handleChange={this.handleChange}
-            label="confirm password"
+            onChange={this.handleChange}
+            label="Confirm Password"
             required
           />
-          <CustomButton type="submit">Sign up</CustomButton>
+          <CustomButton type="submit">SIGN UP</CustomButton>
         </form>
-      </div>
+      </SignUpContainer>
     );
   }
 }
