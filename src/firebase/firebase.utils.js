@@ -21,22 +21,29 @@ const db = getFirestore();
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
   const userRef = doc(db, "users", userAuth.uid);
-  const snapShot = await getDoc(userRef);
-  if (!snapShot.exists()) {
-    const { displayName, email } = userAuth;
-    const createdAt = new Date();
-    try {
-      setDoc(userRef, {
-        displayName,
-        email,
-        createdAt,
-        ...additionalData,
-      });
-    } catch (e) {
-      console.error("error while setting user data in firestore", e);
+  try {
+    const snapShot = await getDoc(userRef);
+
+    console.log("userAuth", snapShot);
+
+    if (!snapShot.exists()) {
+      const { displayName, email } = userAuth;
+      const createdAt = new Date();
+      try {
+        setDoc(userRef, {
+          displayName,
+          email,
+          createdAt,
+          ...additionalData,
+        });
+      } catch (e) {
+        console.error("error while setting user data in firestore", e);
+      }
     }
+    return snapShot;
+  } catch (e) {
+    console.log("firebase err", e?.message);
   }
-  return snapShot;
 };
 
 export const auth = getAuth();
@@ -49,6 +56,6 @@ provider.setCustomParameters({ prompt: "select_account" });
 export const signInWithGoogle = () =>
   signInWithPopup(auth, provider)
     .then((res) => console.log(res))
-    .catch((e) => console.error(e));
+    .catch((e) => console.error("google sign in error", e));
 
 // export default firebase;
