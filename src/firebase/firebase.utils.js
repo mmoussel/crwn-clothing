@@ -1,10 +1,15 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+  writeBatch,
+} from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAfWKQQsrDJngAVnfnQEZtAFYrRlMVYZaY",
   authDomain: "crown-clothing-9ffa8.firebaseapp.com",
@@ -14,10 +19,12 @@ const firebaseConfig = {
   appId: "1:133838497942:web:f791c6b52c03125a773ab7",
   measurementId: "G-FR975M0JED",
 };
+
 // Initialize Firebase
 initializeApp(firebaseConfig);
 
 const db = getFirestore();
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
   const userRef = doc(db, "users", userAuth.uid);
@@ -44,6 +51,39 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   } catch (e) {
     console.log("firebase err", e?.message);
   }
+};
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(db, collectionKey);
+
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = doc(collectionRef);
+    batch.set(newDocRef, obj);
+  });
+  batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
+    const { title, items } = doc.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      items,
+      title,
+    };
+  });
+
+  return transformedCollection.reduce((accmulator, collection) => {
+    accmulator[collection?.title.toLowerCase()] = collection;
+    return accmulator;
+  }, {});
 };
 
 export const auth = getAuth();
