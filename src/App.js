@@ -10,10 +10,17 @@ import ShopPage from "./pages/shop/shop.component";
 import SignInAndSignUpPage from "./pages/signIn-and-signup/signin-and-signup.component";
 
 import { selectCurrentUser } from "./redux/user/user.selectors";
+import { checkUserSession } from "./redux/user/user.actions";
 
-// import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { GlobalStyles } from "./global.styles";
-const App =({ currentUser })=> {
+import { useEffect } from "react";
+
+const App =({ currentUser ,checkUserSession})=> {
+
+  useEffect(()=>{
+    checkUserSession()
+    // eslint-disable-next-line
+  },[])
 
     return (
       <div>
@@ -39,6 +46,9 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
 
+const mapDispatchToProps = dispatch =>({
+  checkUserSession:()=>dispatch(checkUserSession())
+}) 
 
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps ,mapDispatchToProps)(App);

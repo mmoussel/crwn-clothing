@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import {
   collection,
   doc,
@@ -93,9 +93,13 @@ const provider = new GoogleAuthProvider();
 
 provider.setCustomParameters({ prompt: "select_account" });
 
-export const signInWithGoogle = () =>
-  signInWithPopup(auth, provider)
-    .then((res) => console.log(res))
-    .catch((e) => console.error("google sign in error", e));
+export const signInWithGoogleAuth = () =>signInWithPopup(auth, provider)
 
-// export default firebase;
+export const getCurrentUser = ()=>{
+  return new Promise((resolve , reject) => {
+    const unsubscribe = onAuthStateChanged(auth,(userAuth)=>{
+      unsubscribe()
+      resolve(userAuth)
+    },reject)
+  })
+}

@@ -9,8 +9,6 @@ import {
 import shopActionTypes from "./shop.types";
 
 function* fetchCollectionsAsync() {
-  yield console.log("i'm fired");
-
   try {
     const db = getFirestore();
     const collectionsRef = collection(db, "collections");
