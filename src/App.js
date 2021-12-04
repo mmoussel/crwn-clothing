@@ -4,7 +4,6 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 
 import Header from "./components/header/header.component";
-
 import CheckoutPage from "./pages/checkout/checkout.component";
 import HomePage from "./pages/hompage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
@@ -13,29 +12,10 @@ import SignInAndSignUpPage from "./pages/signIn-and-signup/signin-and-signup.com
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+// import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { GlobalStyles } from "./global.styles";
-class App extends React.Component {
-  unsubscribeFromAuth = null;
+const App =({ currentUser })=> {
 
-  componentDidMount() {
-    const { setCurrentUser } = this.props;
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        setCurrentUser({ id: userRef.id, ...userRef.data() });
-      } else {
-        setCurrentUser(userAuth);
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render() {
-    const { currentUser } = this.props;
     return (
       <div>
         <GlobalStyles />
@@ -54,7 +34,7 @@ class App extends React.Component {
       </div>
     );
   }
-}
+
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
