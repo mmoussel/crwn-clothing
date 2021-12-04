@@ -39,8 +39,3 @@ export const OptionLink = styled(Link)`
   padding: 10px 15px;
   cursor: pointer;
 `;
-
-export const Title = styled.span`
-  color: rgb(6, 34, 60);
-  font-weight: bold;
-`;

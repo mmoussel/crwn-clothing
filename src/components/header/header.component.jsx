@@ -13,7 +13,6 @@ import {
   LogoContainer,
   OptionLink,
   OptionsContainer,
-  Title,
 } from "./header.styles";
 
 const Header = ({ currentUser, hidden }) => (
@@ -22,7 +21,6 @@ const Header = ({ currentUser, hidden }) => (
       <Logo className="logo" />
     </LogoContainer>
     <OptionsContainer>
-      <Title>{currentUser?.displayName}</Title>
       <OptionLink to="/shop">Shop</OptionLink>
       <OptionLink to="/">Contact</OptionLink>
       {currentUser ? (
