@@ -15,11 +15,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
 
   app.get("*", function (req, res) {
-    req.sendFile(path.join(__dirname, "client/build", "index.html"));
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
   });
 }
 
@@ -27,8 +27,6 @@ app.listen(port, (error) => {
   if (error) throw error;
   console.log("server is running on port " + port);
 });
-
-app.set("port", port);
 
 app.post("/payment", (req, res) => {
   const body = {
